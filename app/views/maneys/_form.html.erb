@@ -1,0 +1,46 @@
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_with(model: @maney, remote: true) do |form| %>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">お金の登録</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <% if @maney.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(maney.errors.count, "error") %> prohibited this maney from being saved:</h2>
+
+              <ul>
+                <% maney.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="form-group">
+            <%= form.label :content, class: "col-sm-2 col-form-label" %>
+            <div>
+              <%= form.text_field :content, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :price, class: "col-sm-2 col-form-label" %>
+            <%= form.text_field :price, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :category, "カテゴリー", class: "col-sm-2 col-form-label" %>
+            <%= form.collection_select(:category_id, @categories, :id, :name, prompt: "選択してください") %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type='submit' class="btn btn-primary">登録する</button>
+        </div>
+      <% end %>
+    </div>
+  </div>

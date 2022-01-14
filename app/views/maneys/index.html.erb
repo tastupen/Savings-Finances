@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1 class="mt-3 mb-3"><%= current_user.name%>さんの家計簿</h1>
+
+<div class="mt-3 mb-3">
+  <%= link_to new_maney_path, class: "btn p-0 text-dark",remote: true do %>
+    <i class="fas fa-plus align-middle pr-1"></i><span class="align-middle">お金を登録する</span>
+  <% end %>
+</div>
+
+<div id="savings-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+<div class="mt-3 mb-3" style="margin-left:29%;">
+  <%= pie_chart Maney.joins(:category).group("categories.name").sum(:price) %>
+</div>
+
+<div class="mt-3 mb-3"> 
+  <%= form_with url: maneys_path, method: :get do |f| %>
+    <% if @year.present? %>
+      <%= f.select :year, @year_sort_list, selected: @year %>
+      <%= f.select :month, @month_sort_list, selected: @month %>
+    <% else %>
+      <%= f.select :year, @year_sort_list %>
+      <%= f.select :month, @month_sort_list %>
+    <% end %>
+    <%= f.button "表示", onClick: "javascript: this.form.submit();" %>
+  <% end %>
+</div>
+
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Content</th>
+      <th scope="col">Price</th>
+      <th scope="col">Category</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render @maneys %>
+  </tbody>
+</table>
+
