@@ -2,6 +2,11 @@
 
 <h1 class="mt-3 mb-3"><%= current_user.name%>さんの家計簿</h1>
 
+<div>
+  <h3>月々に使えるお金</h3>
+  <span class="font-weight-bold"><%= @salary %>万円(家賃込み)</span>
+</div>
+
 <div class="mt-3 mb-3">
   <%= link_to new_maney_path, class: "btn p-0 text-dark",remote: true do %>
     <i class="fas fa-plus align-middle pr-1"></i><span class="align-middle">お金を登録する</span>
@@ -10,8 +15,13 @@
 
 <div id="savings-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
+<div class="text-center">
+  <h3>今月の支出額</h3>
+  <%= @chart.all.sum(:price) %>
+</div>
+
 <div class="mt-3 mb-3" style="margin-left:29%;">
-  <%= pie_chart Maney.joins(:category).group("categories.name").sum(:price) %>
+  <%= pie_chart @chart.joins(:category).group("categories.name").sum(:price) %>
 </div>
 
 <div class="mt-3 mb-3"> 
@@ -30,7 +40,6 @@
 <table class="table mt-3">
   <thead>
     <tr>
-      <th scope="col">ID</th>
       <th scope="col">Content</th>
       <th scope="col">Price</th>
       <th scope="col">Category</th>

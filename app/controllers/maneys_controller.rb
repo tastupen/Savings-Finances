@@ -9,13 +9,21 @@ class ManeysController < ApplicationController
       @month = sort_params[:month]
       date = Date.parse(@year + "/" + @month)
       @maneys = current_user.maneys.where(created_at: date.all_month).order("created_at asc")
+      @chart = current_user.maneys.where(created_at: date.all_month)
     else
       #今月
       @maneys = current_user.maneys.where(created_at: Time.current.all_month).order("created_at asc")
+      @chart = current_user.maneys.where(created_at: Time.current.all_month)
     end
     @year_sort_list = Maney.year_sort_list
     @month_sort_list = Maney.month_sort_list
     @categories = Category.all
+    #月々使えるお金を算出する
+    @salaries = Salary.where(user_id: current_user.id)
+    @annual_income = @salaries.pluck(:annual_income)[0]
+    @bonus = @salaries.pluck(:bonus)[0]
+    @rent = @salaries.pluck(:rent)[0]
+    @salary = (@annual_income - @bonus) / 12 - @rent
   end
 
   # GET /maneys/1 or /maneys/1.json
@@ -30,6 +38,7 @@ class ManeysController < ApplicationController
 
   # GET /maneys/1/edit
   def edit
+    @categories = Category.all
   end
 
   # POST /maneys or /maneys.json
@@ -38,7 +47,7 @@ class ManeysController < ApplicationController
 
     respond_to do |format|
       if @maney.save
-        format.html { redirect_to maney_url(@maney), notice: "Maney was successfully created." }
+        format.html { redirect_to maneys_path, notice: "Maney was successfully created." }
         format.json { render :show, status: :created, location: @maney }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -51,7 +60,7 @@ class ManeysController < ApplicationController
   def update
     respond_to do |format|
       if @maney.update(maney_params)
-        format.html { redirect_to maney_url(@maney), notice: "Maney was successfully updated." }
+        format.html { redirect_to maneys_path, notice: "Maney was successfully updated." }
         format.json { render :show, status: :ok, location: @maney }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -74,7 +83,7 @@ class ManeysController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_maney
       @maney = current_user.maneys.find(params[:id])
-      redirect_to(maneys_url, alert: "ERROR!!") if @goal.blank?
+      redirect_to(maneys_url, alert: "ERROR!!") if @maney.blank?
     end
 
     # Only allow a list of trusted parameters through.

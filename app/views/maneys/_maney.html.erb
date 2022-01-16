@@ -1,16 +1,15 @@
 <tr id="maney-<%= maney.id %>">
-  <th scope="row"><%= maney.id %></th>
   <td><%= maney.content %></td>
   <td><%= maney.price %></td>
   <td><%= maney.category.name %></td>
   <td>
     <div class="btn-group">
-      <button type="button" class="btn dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-ellipsis-v align-middle"></i>
       </button>
       <div class="dropdown-menu dropdown-menu-right text-middle">
-        <%= link_to "Edit", edit_maney_path(maney), class: "dropdown-item", remote: true %>
-        <%= link_to "Delete", maney_path(maney), method: :delete, class: "dropdown-item text-danger", data: { confirm: 'Are you sure?' } %>
+        <%= link_to "編集", edit_maney_path(maney), class: "dropdown-item", remote: true %>
+        <%= link_to "削除", maney_path(maney), method: :delete, class: "dropdown-item text-danger", data: { confirm: 'Are you sure?' } %>
       </div>
     </div>
   </td>

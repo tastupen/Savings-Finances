@@ -1,2 +1,45 @@
-<h1>Salaries#edit</h1>
-<p>Find me in app/views/salaries/edit.html.erb</p>
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <h3 class="mt-3 mb-3">年収・家賃を入力してください</h3>
+    
+    <hr>
+
+    <%= form_with model: @salary do |f| %>
+
+      <div class="form-group">
+        <%= f.number_field :annual_income, placeholder: "年収", 
+          class: "form-control #{"is-invalid" if alert } savings-login-input" 
+        %> 
+        <% if alert %>
+          <span class="savings-error-message">
+            <strong>数字を入力してください</strong>
+          </span>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <%= f.number_field :bonus, placeholder: "ボーナス",
+          class: "form-control #{"is-invalid" if alert } savings-login-input"
+        %>
+        <% if alert %>
+          <span class="savings-error-message">
+            <strong>数字を入力してください</strong>
+          </span>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <%= f.number_field :rent, placeholder: "家賃",
+          class: "form-control #{"is-invalid" if alert } savings-login-input"
+        %>
+        <% if alert %>
+          <span class="savings-error-message">
+            <strong>数字を入力してください</strong>
+          </span>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <%= f.submit "更新する", class: "mt-3 btn btn-primary w-100" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
